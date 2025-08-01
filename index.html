@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Perawatan Ibu Nifas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 15px;
+            background: #f5f5f5;
+            line-height: 1.4;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            background: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: normal;
+        }
+        
+        .header p {
+            margin: 5px 0 0 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .kunjungan-info {
+            background: #f0f8f0;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border-left: 3px solid #4CAF50;
+        }
+        
+        .kunjungan-schedule {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .schedule-item {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            text-align: center;
+            font-size: 13px;
+        }
+        
+        .schedule-number {
+            font-size: 16px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        
+        .schedule-time {
+            font-size: 12px;
+            color: #666;
+            margin-top: 3px;
+        }
+        
+        .form-container {
+            padding: 20px;
+        }
+        
+        .section {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            background: #fafafa;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .form-group {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-group label {
+            width: 180px;
+            font-weight: normal;
+            color: #333;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 6px;
+        }
+        
+        .btn-group {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #666;
+            color: white;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+        }
+        
+        .unit {
+            margin-left: 8px;
+            color: #666;
+            font-style: italic;
+            font-size: 13px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        
+        table th, table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+            font-size: 14px;
+        }
+        
+        table th {
+            background: #f5f5f5;
+            font-weight: bold;
+        }
+        
+        table input {
+            width: 70px;
+            padding: 4px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            text-align: center;
+        }
+        
+        .alert {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Form Perawatan Ibu Nifas</h1>
+            <p>Kunjungan Perawatan Ibu Nifas (6 jam - 42 hari pasca bersalin)</p>
+        </div>
+        
+        <!-- Info Jadwal Kunjungan -->
+        <div class="kunjungan-info">
+            <h3 style="margin: 0 0 8px 0; color: #4CAF50; font-size: 16px;">Jadwal Kunjungan Nifas</h3>
+            <div class="kunjungan-schedule">
+                <div class="schedule-item">
+                    <div class="schedule-number">Kunjungan 1</div>
+                    <div class="schedule-time">6 jam - 2 hari</div>
+                </div>
+                <div class="schedule-item">
+                    <div class="schedule-number">Kunjungan 2</div>
+                    <div class="schedule-time">3 - 7 hari</div>
+                </div>
+                <div class="schedule-item">
+                    <div class="schedule-number">Kunjungan 3</div>
+                    <div class="schedule-time">8 - 28 hari</div>
+                </div>
+                <div class="schedule-item">
+                    <div class="schedule-number">Kunjungan 4</div>
+                    <div class="schedule-time">29 - 42 hari</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-container">
+            <!-- Alert Messages -->
+            <div id="alertSuccess" class="alert alert-success"></div>
+            <div id="alertInfo" class="alert alert-info"></div>
+            
+            <form id="formNifas">
+                
+                <!-- Data Dasar -->
+                <div class="section">
+                    <div class="section-title">Data Dasar Ibu</div>
+                    
+                    <div class="form-group">
+                        <label for="nama_ibu">Nama Ibu:</label>
+                        <input type="text" id="nama_ibu" name="nama_ibu" required placeholder="Nama lengkap ibu">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tanggal_melahirkan">Tanggal Melahirkan:</label>
+                        <input type="date" id="tanggal_melahirkan" name="tanggal_melahirkan" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="kunjungan_ke">Kunjungan ke:</label>
+                        <select id="kunjungan_ke" name="kunjungan_ke" required>
+                            <option value="">Pilih Kunjungan</option>
+                            <option value="1">Kunjungan 1 (6 jam - 2 hari)</option>
+                            <option value="2">Kunjungan 2 (3 - 7 hari)</option>
+                            <option value="3">Kunjungan 3 (8 - 28 hari)</option>
+                            <option value="4">Kunjungan 4 (29 - 42 hari)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tanggal_kunjungan">Tanggal Kunjungan:</label>
+                        <input type="date" id="tanggal_kunjungan" name="tanggal_kunjungan" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="hari_ke_nifas">Hari ke Nifas:</label>
+                        <input type="number" id="hari_ke_nifas" name="hari_ke_nifas" placeholder="1" min="1" max="42" readonly>
+                        <span class="unit">hari</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tenaga_kesehatan">Tenaga Kesehatan:</label>
+                        <select id="tenaga_kesehatan" name="tenaga_kesehatan" required>
+                            <option value="">Pilih Tenaga Kesehatan</option>
+                            <option value="dokter_spog">Dokter Spesialis Kandungan</option>
+                            <option value="dokter_umum">Dokter Umum</option>
+                            <option value="bidan">Bidan</option>
+                            <option value="perawat">Perawat</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tempat_pelayanan">Tempat Pelayanan:</label>
+                        <select id="tempat_pelayanan" name="tempat_pelayanan">
+                            <option value="">Pilih Tempat</option>
+                            <option value="rumah_sakit">Rumah Sakit</option>
+                            <option value="puskesmas">Puskesmas</option>
+                            <option value="klinik">Klinik</option>
+                            <option value="rumah">Rumah (Kunjungan)</option>
+                            <option value="posyandu">Posyandu</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Keadaan Umum -->
+                <div class="section">
+                    <div class="section-title">Keadaan Umum</div>
+
+                    <div style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Hasil</th>
+                                    <th>Satuan</th>
+                                    <th>Nilai Normal</th>
+                                    <th>Frekuensi</th>
+                                    <th>Interpretasi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Tekanan Darah (TD)</strong></td>
+                                    <td><input type="text" id="tekanan_darah" name="tekanan_darah" placeholder="120/80"></td>
+                                    <td>mmHg</td>
+                                    <td style="color: #28a745; font-weight: bold;">&lt;140/90</td>
+                                    <td>Setiap kali periksa</td>
+                                    <td><span id="td_status" style="font-weight: bold;"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Suhu (S)</strong></td>
+                                    <td><input type="number" id="suhu" name="suhu" placeholder="36.5" step="0.1"></td>
+                                    <td>°C</td>
+                                    <td style="color: #28a745; font-weight: bold;">36.0-37.5</td>
+                                    <td>Setiap kali periksa</td>
+                                    <td><span id="suhu_status" style="font-weight: bold;"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Nadi (N)</strong></td>
+                                    <td><input type="number" id="nadi" name="nadi" placeholder="80"></td>
+                                    <td>x/menit</td>
+                                    <td style="color: #28a745; font-weight: bold;">60-100</td>
+                                    <td>Setiap kali periksa</td>
+                                    <td><span id="nadi_status" style="font-weight: bold;"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Respirasi (R)</strong></td>
+                                    <td><input type="number" id="respirasi" name="respirasi" placeholder="20"></td>
+                                    <td>x/menit</td>
+                                    <td style="color: #28a745; font-weight: bold;">16-24</td>
+                                    <td>Setiap kali periksa</td>
+                                    <td><span id="respirasi_status" style="font-weight: bold;"></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Keluhan dan Masalah -->
+                <div class="section">
+                    <div class="section-title">Keluhan dan Masalah</div>
+
+                    <div class="form-group">
+                        <label>Keluhan yang Dirasakan:</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="keluhan[]" value="nyeri_perut" id="nyeri_perut">
+                                <label for="nyeri_perut">Nyeri Perut</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="keluhan[]" value="nyeri_punggung" id="nyeri_punggung">
+                                <label for="nyeri_punggung">Nyeri Punggung</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="keluhan[]" value="pusing" id="pusing">
+                                <label for="pusing">Pusing</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="keluhan[]" value="demam" id="demam">
+                                <label for="demam">Demam</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="keluhan[]" value="tidak_ada" id="keluhan_tidak_ada">
+                                <label for="keluhan_tidak_ada">Tidak Ada Keluhan</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="keluhan_lain">Keluhan Lain:</label>
+                        <textarea id="keluhan_lain" name="keluhan_lain" rows="2" placeholder="Sebutkan keluhan lain..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Nasihat untuk Ibu Nifas -->
+                <div class="section">
+                    <div class="section-title">Nasihat untuk Ibu Nifas</div>
+
+                    <div class="form-group">
+                        <label>Nasihat yang Diberikan:</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="nasihat[]" value="nutrisi_beragam" id="nutrisi_beragam">
+                                <label for="nutrisi_beragam">1. Makan makanan beraneka ragam (karbohidrat, protein, sayur, buah)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="nasihat[]" value="air_minum" id="air_minum">
+                                <label for="air_minum">2. Kebutuhan air minum: 14 gelas/hari (6 bulan pertama), 12 gelas/hari (6 bulan kedua)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="nasihat[]" value="kebersihan_diri" id="kebersihan_diri_nasihat">
+                                <label for="kebersihan_diri_nasihat">3. Menjaga kebersihan diri dan daerah kemaluan</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="nasihat[]" value="istirahat_cukup" id="istirahat_cukup_nasihat">
+                                <label for="istirahat_cukup_nasihat">4. Istirahat cukup, saat bayi tidur ibu istirahat</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="nasihat[]" value="asi_eksklusif" id="asi_eksklusif">
+                                <label for="asi_eksklusif">5. ASI eksklusif 6 bulan dan cara menyusui yang benar</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="catatan_khusus">Catatan Khusus:</label>
+                        <textarea id="catatan_khusus" name="catatan_khusus" rows="3" placeholder="Catatan khusus atau rekomendasi..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Tombol Aksi -->
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset Form</button>
+                    <button type="button" class="btn" onclick="simpanDataNifas()">Simpan Data</button>
+                    <button type="button" class="btn" onclick="tampilkanDataNifas()">Lihat Data</button>
+                    <button type="button" class="btn" onclick="exportDataNifas()">Export Data</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Auto-calculate hari ke nifas
+        function calculateHariNifas() {
+            const tanggalMelahirkan = document.getElementById('tanggal_melahirkan').value;
+            const tanggalKunjungan = document.getElementById('tanggal_kunjungan').value;
+
+            if (tanggalMelahirkan && tanggalKunjungan) {
+                const dateStart = new Date(tanggalMelahirkan);
+                const dateEnd = new Date(tanggalKunjungan);
+                const timeDiff = dateEnd.getTime() - dateStart.getTime();
+                const dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+                if (dayDiff >= 0) {
+                    document.getElementById('hari_ke_nifas').value = dayDiff;
+                }
+            }
+        }
+
+        // Cek status tekanan darah
+        function cekTekananDarah() {
+            const tdValue = document.getElementById('tekanan_darah').value;
+            const statusElement = document.getElementById('td_status');
+
+            if (!tdValue) {
+                statusElement.textContent = '';
+                return;
+            }
+
+            const tdParts = tdValue.split('/');
+            if (tdParts.length === 2) {
+                const sistolik = parseInt(tdParts[0]);
+                const diastolik = parseInt(tdParts[1]);
+
+                if (sistolik >= 140 || diastolik >= 90) {
+                    statusElement.textContent = 'Hipertensi';
+                    statusElement.style.color = '#dc3545';
+                } else if (sistolik < 90 || diastolik < 60) {
+                    statusElement.textContent = 'Hipotensi';
+                    statusElement.style.color = '#ffc107';
+                } else {
+                    statusElement.textContent = 'Normal';
+                    statusElement.style.color = '#28a745';
+                }
+            }
+        }
+
+        // Cek status suhu
+        function cekSuhu() {
+            const suhu = parseFloat(document.getElementById('suhu').value);
+            const statusElement = document.getElementById('suhu_status');
+
+            if (!suhu) {
+                statusElement.textContent = '';
+                return;
+            }
+
+            if (suhu < 36.0) {
+                statusElement.textContent = 'Hipotermia';
+                statusElement.style.color = '#17a2b8';
+            } else if (suhu > 37.5) {
+                statusElement.textContent = 'Demam';
+                statusElement.style.color = '#dc3545';
+            } else {
+                statusElement.textContent = 'Normal';
+                statusElement.style.color = '#28a745';
+            }
+        }
+
+        // Cek status nadi
+        function cekNadi() {
+            const nadi = parseInt(document.getElementById('nadi').value);
+            const statusElement = document.getElementById('nadi_status');
+
+            if (!nadi) {
+                statusElement.textContent = '';
+                return;
+            }
+
+            if (nadi < 60) {
+                statusElement.textContent = 'Bradikardia';
+                statusElement.style.color = '#ffc107';
+            } else if (nadi > 100) {
+                statusElement.textContent = 'Takikardia';
+                statusElement.style.color = '#dc3545';
+            } else {
+                statusElement.textContent = 'Normal';
+                statusElement.style.color = '#28a745';
+            }
+        }
+
+        // Cek status respirasi
+        function cekRespirasi() {
+            const respirasi = parseInt(document.getElementById('respirasi').value);
+            const statusElement = document.getElementById('respirasi_status');
+
+            if (!respirasi) {
+                statusElement.textContent = '';
+                return;
+            }
+
+            if (respirasi < 16) {
+                statusElement.textContent = 'Bradipnea';
+                statusElement.style.color = '#ffc107';
+            } else if (respirasi > 24) {
+                statusElement.textContent = 'Takipnea';
+                statusElement.style.color = '#dc3545';
+            } else {
+                statusElement.textContent = 'Normal';
+                statusElement.style.color = '#28a745';
+            }
+        }
+
+        // Simpan data nifas
+        function simpanDataNifas() {
+            const formData = new FormData(document.getElementById('formNifas'));
+            const data = {};
+
+            for (let [key, value] of formData.entries()) {
+                if (data[key]) {
+                    if (Array.isArray(data[key])) {
+                        data[key].push(value);
+                    } else {
+                        data[key] = [data[key], value];
+                    }
+                } else {
+                    data[key] = value;
+                }
+            }
+
+            data.timestamp = new Date().toLocaleString();
+
+            if (!data.nama_ibu || !data.tanggal_melahirkan || !data.kunjungan_ke) {
+                showAlert('Silakan isi semua field yang wajib diisi!', 'error');
+                return;
+            }
+
+            const storageKey = 'dataNifas_' + new Date().toISOString().split('T')[0];
+            let existingData = JSON.parse(localStorage.getItem(storageKey) || '[]');
+            existingData.push(data);
+            localStorage.setItem(storageKey, JSON.stringify(existingData));
+
+            showAlert('Data perawatan nifas berhasil disimpan!', 'success');
+        }
+
+        // Tampilkan data
+        function tampilkanDataNifas() {
+            const today = new Date().toISOString().split('T')[0];
+            const storageKey = 'dataNifas_' + today;
+            const savedData = localStorage.getItem(storageKey);
+
+            if (savedData) {
+                const dataArray = JSON.parse(savedData);
+                let message = 'DATA PERAWATAN NIFAS HARI INI:\\n\\n';
+
+                dataArray.forEach((data, index) => {
+                    message += `=== KUNJUNGAN ${index + 1} ===\\n`;
+                    message += 'Nama Ibu: ' + (data.nama_ibu || '-') + '\\n';
+                    message += 'Kunjungan ke: ' + (data.kunjungan_ke || '-') + '\\n';
+                    message += 'Hari ke Nifas: ' + (data.hari_ke_nifas || '-') + ' hari\\n';
+                    message += 'TD: ' + (data.tekanan_darah || '-') + ' mmHg\\n';
+                    message += 'Suhu: ' + (data.suhu || '-') + ' °C\\n\\n';
+                });
+
+                alert(message);
+            } else {
+                showAlert('Belum ada data yang tersimpan hari ini', 'info');
+            }
+        }
+
+        // Export data
+        function exportDataNifas() {
+            const today = new Date().toISOString().split('T')[0];
+            const storageKey = 'dataNifas_' + today;
+            const savedData = localStorage.getItem(storageKey);
+
+            if (savedData) {
+                const dataArray = JSON.parse(savedData);
+                const jsonString = JSON.stringify(dataArray, null, 2);
+
+                const blob = new Blob([jsonString], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'data_nifas_' + today + '.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showAlert('Data berhasil diexport!', 'success');
+            } else {
+                showAlert('Tidak ada data untuk diexport', 'info');
+            }
+        }
+
+        // Reset form
+        function resetForm() {
+            if (confirm('Yakin ingin mereset semua data?')) {
+                document.getElementById('formNifas').reset();
+                document.getElementById('tanggal_kunjungan').valueAsDate = new Date();
+
+                // Reset status
+                document.getElementById('td_status').textContent = '';
+                document.getElementById('suhu_status').textContent = '';
+                document.getElementById('nadi_status').textContent = '';
+                document.getElementById('respirasi_status').textContent = '';
+
+                showAlert('Form telah direset', 'success');
+            }
+        }
+
+        // Show alert
+        function showAlert(message, type) {
+            const alertElement = type === 'success' ? document.getElementById('alertSuccess') : document.getElementById('alertInfo');
+            alertElement.textContent = message;
+            alertElement.style.display = 'block';
+
+            setTimeout(() => {
+                alertElement.style.display = 'none';
+            }, 3000);
+        }
+
+        // Event listeners
+        document.getElementById('tanggal_melahirkan').addEventListener('change', calculateHariNifas);
+        document.getElementById('tanggal_kunjungan').addEventListener('change', calculateHariNifas);
+        document.getElementById('tekanan_darah').addEventListener('input', cekTekananDarah);
+        document.getElementById('suhu').addEventListener('input', cekSuhu);
+        document.getElementById('nadi').addEventListener('input', cekNadi);
+        document.getElementById('respirasi').addEventListener('input', cekRespirasi);
+
+        // Set default date
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('tanggal_kunjungan').valueAsDate = new Date();
+        });
+    </script>
+</body>
+</html>
